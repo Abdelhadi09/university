@@ -10,33 +10,45 @@ public class StudentDetails extends JFrame implements ActionListener {
 
     Choice crollno;
     JTable table;
-    JButton search, print, update, add, cancel;
-    
+    RoundJButton search, print;
+
     StudentDetails() {
-        
         getContentPane().setBackground(Color.WHITE);
-        setLayout(null);
-        
+        setLayout(new BorderLayout());
+
+        JPanel searchPanel = new JPanel(null);
+        searchPanel.setPreferredSize(new Dimension(900, 100));
+        add(searchPanel, BorderLayout.NORTH);
+
         JLabel heading = new JLabel("Search by Roll Number");
-        heading.setBounds(20, 20, 150, 20);
-        add(heading);
-        
+        heading.setBounds(20, 20, 150, 30);
+        searchPanel.add(heading);
+
         crollno = new Choice();
-        crollno.setBounds(180, 20, 150, 20);
-        add(crollno);
-        
+        crollno.setBounds(180, 20, 150, 30);
+        searchPanel.add(crollno);
+
         try {
             Conn c = new Conn();
             ResultSet rs = c.s.executeQuery("select * from student");
-            while(rs.next()) {
+            while (rs.next()) {
                 crollno.add(rs.getString("rollno"));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
+        // Position the "Search" button next to the combo box
+        search = new RoundJButton("Search", 15, 15);
+        search.setBounds(340, 20, 120, 30);
+        search.setBackground(Color.BLACK);
+        search.setForeground(Color.WHITE);
+        search.addActionListener(this);
+        search.setFont(new Font("Tahoma", Font.BOLD, 15));
+        searchPanel.add(search);
+
         table = new JTable();
-        
+
         try {
             Conn c = new Conn();
             ResultSet rs = c.s.executeQuery("select * from student");
@@ -44,44 +56,31 @@ public class StudentDetails extends JFrame implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         JScrollPane jsp = new JScrollPane(table);
-        jsp.setBounds(0, 100, 900, 600);
-        add(jsp);
-        
-        search = new JButton("Search");
-        search.setBounds(20, 70, 80, 20);
-        search.addActionListener(this);
-        add(search);
-        
-        print = new JButton("Print");
-        print.setBounds(120, 70, 80, 20);
+        add(jsp, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel(null);
+        buttonPanel.setPreferredSize(new Dimension(900, 100));
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        // Position the "Print" button in the bottom right corner
+        print = new RoundJButton("Print", 15, 15);
+        print.setBounds(760, 20, 120, 30);
+        print.setBackground(Color.BLACK);
+        print.setForeground(Color.WHITE);
         print.addActionListener(this);
-        add(print);
-        
-        add = new JButton("Add");
-        add.setBounds(220, 70, 80, 20);
-        add.addActionListener(this);
-        add(add);
-        
-        update = new JButton("Update");
-        update.setBounds(320, 70, 80, 20);
-        update.addActionListener(this);
-        add(update);
-        
-        cancel = new JButton("Cancel");
-        cancel.setBounds(420, 70, 80, 20);
-        cancel.addActionListener(this);
-        add(cancel);
-        
-        setSize(900, 700);
-        setLocation(300, 100);
+        print.setFont(new Font("Tahoma", Font.BOLD, 15));
+        buttonPanel.add(print);
+
+        setSize(900, 670);
+        setLocation(300, 50);
         setVisible(true);
     }
-    
+
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == search) {
-            String query = "select * from student where rollno = '"+crollno.getSelectedItem()+"'";
+            String query = "select * from student where rollno = '" + crollno.getSelectedItem() + "'";
             try {
                 Conn c = new Conn();
                 ResultSet rs = c.s.executeQuery(query);
@@ -95,13 +94,7 @@ public class StudentDetails extends JFrame implements ActionListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (ae.getSource() == add) {
-            setVisible(false);
-            new AddStudent();
-        } else if (ae.getSource() == update) {
-            setVisible(false);
-            new UpdateStudent();
-        } else {
+        }  else {
             setVisible(false);
         }
     }

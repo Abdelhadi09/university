@@ -10,33 +10,45 @@ public class StudentLeaveDetails extends JFrame implements ActionListener {
 
     Choice crollno;
     JTable table;
-    JButton search, print, update, add, cancel;
-    
+    RoundJButton search, print, cancel;
+
     StudentLeaveDetails() {
-        
         getContentPane().setBackground(Color.WHITE);
-        setLayout(null);
-        
+        setLayout(new BorderLayout());
+
+        JPanel searchPanel = new JPanel(null);
+        searchPanel.setPreferredSize(new Dimension(900, 100));
+        add(searchPanel, BorderLayout.NORTH);
+
         JLabel heading = new JLabel("Search by Roll Number");
-        heading.setBounds(20, 20, 150, 20);
-        add(heading);
-        
+        heading.setBounds(20, 20, 150, 30);
+        searchPanel.add(heading);
+
         crollno = new Choice();
-        crollno.setBounds(180, 20, 150, 20);
-        add(crollno);
-        
+        crollno.setBounds(180, 20, 150, 30);
+        searchPanel.add(crollno);
+
         try {
             Conn c = new Conn();
             ResultSet rs = c.s.executeQuery("select * from student");
-            while(rs.next()) {
+            while (rs.next()) {
                 crollno.add(rs.getString("rollno"));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
+        // Position the "Search" button next to the combo box
+        search = new RoundJButton("Search", 15, 15);
+        search.setBounds(340, 20, 120, 30);
+        search.setBackground(Color.BLACK);
+        search.setForeground(Color.WHITE);
+        search.addActionListener(this);
+        search.setFont(new Font("Tahoma", Font.BOLD, 15));
+        searchPanel.add(search);
+
         table = new JTable();
-        
+
         try {
             Conn c = new Conn();
             ResultSet rs = c.s.executeQuery("select * from studentleave");
@@ -44,34 +56,39 @@ public class StudentLeaveDetails extends JFrame implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         JScrollPane jsp = new JScrollPane(table);
-        jsp.setBounds(0, 100, 900, 600);
-        add(jsp);
-        
-        search = new JButton("Search");
-        search.setBounds(20, 70, 80, 20);
-        search.addActionListener(this);
-        add(search);
-        
-        print = new JButton("Print");
-        print.setBounds(120, 70, 80, 20);
+        add(jsp, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel(null);
+        buttonPanel.setPreferredSize(new Dimension(900, 100));
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        // Position the "Print" button in the bottom right corner
+        print = new RoundJButton("Print", 15, 15);
+        print.setBounds(760, 20, 120, 30);
+        print.setBackground(Color.BLACK);
+        print.setForeground(Color.WHITE);
         print.addActionListener(this);
-        add(print);
-        
-        cancel = new JButton("Cancel");
-        cancel.setBounds(220, 70, 80, 20);
+        print.setFont(new Font("Tahoma", Font.BOLD, 15));
+        buttonPanel.add(print);
+/*
+        cancel = new RoundJButton("Cancel", 15, 15);
+        cancel.setBounds(620, 20, 120, 30);
+        cancel.setBackground(Color.BLACK);
+        cancel.setForeground(Color.WHITE);
         cancel.addActionListener(this);
-        add(cancel);
-        
-        setSize(900, 700);
-        setLocation(300, 100);
+        cancel.setFont(new Font("Tahoma", Font.BOLD, 15));
+        buttonPanel.add(cancel);
+*/
+        setSize(900, 670);
+        setLocation(300, 50);
         setVisible(true);
     }
-    
+
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == search) {
-            String query = "select * from studentleave where rollno = '"+crollno.getSelectedItem()+"'";
+            String query = "select * from studentleave where rollno = '" + crollno.getSelectedItem() + "'";
             try {
                 Conn c = new Conn();
                 ResultSet rs = c.s.executeQuery(query);

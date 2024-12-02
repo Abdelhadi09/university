@@ -26,7 +26,7 @@ public class UpdateTeacher extends JFrame implements ActionListener{
         
         JLabel lblrollnumber = new JLabel("Select Employee Id");
         lblrollnumber.setBounds(50, 100, 200, 20);
-        lblrollnumber.setFont(new Font("serif", Font.PLAIN, 20));
+        lblrollnumber.setFont(new Font("Tahoma", Font.PLAIN, 20));
         add(lblrollnumber);
         
         cEmpId = new Choice();
@@ -164,7 +164,7 @@ public class UpdateTeacher extends JFrame implements ActionListener{
             ResultSet rs = c.s.executeQuery(query);
             while(rs.next()) {
                 labelname.setText(rs.getString("name"));
-                labelfname.setText(rs.getString("fname"));
+                labelfname.setText(rs.getString("Lname"));
                 labeldob.setText(rs.getString("dob"));
                 tfaddress.setText(rs.getString("address"));
                 tfphone.setText(rs.getString("phone"));
@@ -173,8 +173,8 @@ public class UpdateTeacher extends JFrame implements ActionListener{
                 labelxii.setText(rs.getString("class_xii"));
                 labelaadhar.setText(rs.getString("aadhar"));
                 labelEmpId.setText(rs.getString("empId"));
-                tfcourse.setText(rs.getString("education"));
-                tfbranch.setText(rs.getString("department"));
+                tfcourse.setText(rs.getString("MAJOR"));
+                tfbranch.setText(rs.getString("DEPARTEMENT"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -188,7 +188,7 @@ public class UpdateTeacher extends JFrame implements ActionListener{
                     ResultSet rs = c.s.executeQuery(query);
                     while(rs.next()) {
                         labelname.setText(rs.getString("name"));
-                        labelfname.setText(rs.getString("fname"));
+                        labelfname.setText(rs.getString("Lname"));
                         labeldob.setText(rs.getString("dob"));
                         tfaddress.setText(rs.getString("address"));
                         tfphone.setText(rs.getString("phone"));
@@ -197,8 +197,8 @@ public class UpdateTeacher extends JFrame implements ActionListener{
                         labelxii.setText(rs.getString("class_xii"));
                         labelaadhar.setText(rs.getString("aadhar"));
                         labelEmpId.setText(rs.getString("empId"));
-                        tfcourse.setText(rs.getString("education"));
-                        tfbranch.setText(rs.getString("department"));
+                        tfcourse.setText(rs.getString("MAJOR"));
+                        tfbranch.setText(rs.getString("DEPARTEMENT"));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -235,7 +235,7 @@ public class UpdateTeacher extends JFrame implements ActionListener{
             String branch = tfbranch.getText();
             
             try {
-                String query = "update teacher set address='"+address+"', phone='"+phone+"', email='"+email+"', education='"+course+"', department='"+branch+"' where empId='"+empId+"'";
+                String query = "update teacher set address='"+address+"', phone='"+phone+"', email='"+email+"', MAJOR='"+course+"', DEPARTEMENT='"+branch+"' where empId='"+empId+"'";
                 Conn con = new Conn();
                 con.s.executeUpdate(query);
                 

@@ -173,8 +173,8 @@ public class UpdateStudent extends JFrame implements ActionListener{
                 labelxii.setText(rs.getString("class_xii"));
                 labelaadhar.setText(rs.getString("aadhar"));
                 labelrollno.setText(rs.getString("rollno"));
-                tfcourse.setText(rs.getString("course"));
-                tfbranch.setText(rs.getString("branch"));
+                tfcourse.setText(rs.getString("MAJOR"));
+                tfbranch.setText(rs.getString("DEPARTEMENT"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,8 +197,8 @@ public class UpdateStudent extends JFrame implements ActionListener{
                         labelxii.setText(rs.getString("class_xii"));
                         labelaadhar.setText(rs.getString("aadhar"));
                         labelrollno.setText(rs.getString("rollno"));
-                        tfcourse.setText(rs.getString("course"));
-                        tfbranch.setText(rs.getString("branch"));
+                        tfcourse.setText(rs.getString("MAJOR"));
+                        tfbranch.setText(rs.getString("DEPARTEMENT"));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -235,7 +235,7 @@ public class UpdateStudent extends JFrame implements ActionListener{
             String branch = tfbranch.getText();
             
             try {
-                String query = "update student set address='"+address+"', phone='"+phone+"', email='"+email+"', course='"+course+"', branch='"+branch+"' where rollno='"+rollno+"'";
+                String query = "update student set address='"+address+"', phone='"+phone+"', email='"+email+"', MAJOR='"+course+"', DEPARTEMENT='"+branch+"' where rollno='"+rollno+"'";
                 Conn con = new Conn();
                 con.s.executeUpdate(query);
                 

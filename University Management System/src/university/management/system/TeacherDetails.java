@@ -10,33 +10,45 @@ public class TeacherDetails extends JFrame implements ActionListener {
 
     Choice cEmpId;
     JTable table;
-    JButton search, print, update, add, cancel;
-    
+    RoundJButton search, print, update, add, cancel;
+
     TeacherDetails() {
-        
         getContentPane().setBackground(Color.WHITE);
-        setLayout(null);
-        
+        setLayout(new BorderLayout());
+
+        JPanel searchPanel = new JPanel(null);
+        searchPanel.setPreferredSize(new Dimension(900, 100));
+        add(searchPanel, BorderLayout.NORTH);
+
         JLabel heading = new JLabel("Search by Employee Id");
-        heading.setBounds(20, 20, 150, 20);
-        add(heading);
-        
+        heading.setBounds(20, 20, 150, 30);
+        searchPanel.add(heading);
+
         cEmpId = new Choice();
-        cEmpId.setBounds(180, 20, 150, 20);
-        add(cEmpId);
-        
+        cEmpId.setBounds(180, 20, 150, 30);
+        searchPanel.add(cEmpId);
+
         try {
             Conn c = new Conn();
             ResultSet rs = c.s.executeQuery("select * from teacher");
-            while(rs.next()) {
+            while (rs.next()) {
                 cEmpId.add(rs.getString("empId"));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
+        // Position the "Search" button next to the combo box
+        search = new RoundJButton("Search", 15, 15);
+        search.setBounds(340, 20, 120, 30);
+        search.setBackground(Color.BLACK);
+        search.setForeground(Color.WHITE);
+        search.addActionListener(this);
+        search.setFont(new Font("Tahoma", Font.BOLD, 15));
+        searchPanel.add(search);
+
         table = new JTable();
-        
+
         try {
             Conn c = new Conn();
             ResultSet rs = c.s.executeQuery("select * from teacher");
@@ -44,44 +56,55 @@ public class TeacherDetails extends JFrame implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         JScrollPane jsp = new JScrollPane(table);
-        jsp.setBounds(0, 100, 900, 600);
-        add(jsp);
-        
-        search = new JButton("Search");
-        search.setBounds(20, 70, 80, 20);
-        search.addActionListener(this);
-        add(search);
-        
-        print = new JButton("Print");
-        print.setBounds(120, 70, 80, 20);
-        print.addActionListener(this);
-        add(print);
-        
-        add = new JButton("Add");
-        add.setBounds(220, 70, 80, 20);
+        add(jsp, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel(null);
+        buttonPanel.setPreferredSize(new Dimension(900, 100));
+        add(buttonPanel, BorderLayout.SOUTH);
+/*
+        add = new RoundJButton("Add", 15, 15);
+        add.setBounds(20, 20, 120, 30);
+        add.setBackground(Color.BLACK);
+        add.setForeground(Color.WHITE);
         add.addActionListener(this);
-        add(add);
-        
-        update = new JButton("Update");
-        update.setBounds(320, 70, 80, 20);
+        add.setFont(new Font("Tahoma", Font.BOLD, 15));
+        buttonPanel.add(add);
+
+        update = new RoundJButton("Update", 15, 15);
+        update.setBounds(160, 20, 120, 30);
+        update.setBackground(Color.BLACK);
+        update.setForeground(Color.WHITE);
         update.addActionListener(this);
-        add(update);
-        
-        cancel = new JButton("Cancel");
-        cancel.setBounds(420, 70, 80, 20);
+        update.setFont(new Font("Tahoma", Font.BOLD, 15));
+        buttonPanel.add(update);
+
+        cancel = new RoundJButton("Cancel", 15, 15);
+        cancel.setBounds(300, 20, 120, 30);
+        cancel.setBackground(Color.BLACK);
+        cancel.setForeground(Color.WHITE);
         cancel.addActionListener(this);
-        add(cancel);
-        
-        setSize(900, 700);
-        setLocation(300, 100);
+        cancel.setFont(new Font("Tahoma", Font.BOLD, 15));
+        buttonPanel.add(cancel);
+*/
+        // Position the "Print" button in the bottom right corner
+        print = new RoundJButton("Print", 15, 15);
+        print.setBounds(760, 20, 120, 30);
+        print.setBackground(Color.BLACK);
+        print.setForeground(Color.WHITE);
+        print.addActionListener(this);
+        print.setFont(new Font("Tahoma", Font.BOLD, 15));
+        buttonPanel.add(print);
+
+        setSize(900, 670);
+        setLocation(300, 50);
         setVisible(true);
     }
-    
+
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == search) {
-            String query = "select * from teacher where rollno = '"+cEmpId.getSelectedItem()+"'";
+            String query = "select * from teacher where empId = '" + cEmpId.getSelectedItem() + "'";
             try {
                 Conn c = new Conn();
                 ResultSet rs = c.s.executeQuery(query);

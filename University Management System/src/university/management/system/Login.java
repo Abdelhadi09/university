@@ -7,69 +7,69 @@ import java.sql.*;
 
 public class Login extends JFrame implements ActionListener{
 
-    JButton login, cancel;
-    JTextField tfusername, tfpassword;
-    
-    Login () {
-        
+    RoundJButton login, cancel;
+    RoundTextField tfusername;
+    RoundPasswordField tfpassword;
+
+    Login() {
+        setTitle("Login");
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
-        
+
+        // Title Label
+        JLabel lbltitle = new JLabel("Login");
+        lbltitle.setFont(new Font("Tahoma", Font.BOLD, 30));
+        lbltitle.setBounds(150, 10, 100, 40);
+        add(lbltitle);
+
         JLabel lblusername = new JLabel("Username");
-        lblusername.setBounds(40, 20, 100, 20);
+        lblusername.setBounds(60, 70, 100, 20);
         add(lblusername);
-        
-        tfusername = new JTextField();
-        tfusername.setBounds(150, 20, 150, 20);
+
+        tfusername = new RoundTextField(15, 15, 15);
+        tfusername.setBounds(170, 70, 150, 30);
         add(tfusername);
-        
+
         JLabel lblpassword = new JLabel("Password");
-        lblpassword.setBounds(40, 70, 100, 20);
+        lblpassword.setBounds(60, 120, 100, 20);
         add(lblpassword);
-        
-        tfpassword = new JPasswordField();
-        tfpassword.setBounds(150, 70, 150, 20);
+
+        tfpassword = new RoundPasswordField(15, 15, 15);
+        tfpassword.setBounds(170, 120, 150, 30);
         add(tfpassword);
-        
-        login = new JButton("Login");
-        login.setBounds(40, 140, 120, 30);
+
+        login = new RoundJButton("Login", 15, 15);
+        login.setBounds(60, 180, 120, 30);
         login.setBackground(Color.BLACK);
         login.setForeground(Color.WHITE);
         login.addActionListener(this);
         login.setFont(new Font("Tahoma", Font.BOLD, 15));
         add(login);
-        
-        cancel = new JButton("Cancel");
-        cancel.setBounds(180, 140, 120, 30);
+
+        cancel = new RoundJButton("Cancel", 15, 15);
+        cancel.setBounds(200, 180, 120, 30);
         cancel.setBackground(Color.BLACK);
         cancel.setForeground(Color.WHITE);
         cancel.addActionListener(this);
         cancel.setFont(new Font("Tahoma", Font.BOLD, 15));
         add(cancel);
-        
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/second.jpg"));
-        Image i2 = i1.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel image = new JLabel(i3);
-        image.setBounds(350, 0, 200, 200);
-        add(image);
-        
-        setSize(600, 300);
-        setLocation(500, 250);
+
+        setSize(400, 300);
+        setLocation(500, 200);
         setVisible(true);
     }
-    
+
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == login) {
             String username = tfusername.getText();
-            String password = tfpassword.getText();
+            String password = new String(tfpassword.getPassword());  // Use getPassword() for JPasswordField
             
             String query = "select * from login where username='"+username+"' and password='"+password+"'";
-            
+
             try {
                 Conn c = new Conn();
                 ResultSet rs = c.s.executeQuery(query);
-                
+
                 if (rs.next()) {
                     setVisible(false);
                     new Project();
@@ -77,7 +77,7 @@ public class Login extends JFrame implements ActionListener{
                     JOptionPane.showMessageDialog(null, "Invalid username or password");
                     setVisible(false);
                 }
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
